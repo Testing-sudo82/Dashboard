@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cashier Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Cashier Dashboard</h1>
+    
+<h2>Products</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>Product Code</th>
+            <th>Amount/Unit</th>
+            <th>Total Quantity</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+        <tr>
+            <td>{{ product['name'] }}</td>
+            <td>{{ product['product_code'] }}</td>
+            <td>{{ product['amount_per_piece'] }}</td>
+            <td>{{ product['total_quantity'] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+    <h2>Add Product</h2>
+    <form action="/add_product" method="POST">
+        <input type="text" name="name" placeholder="Product Name" required>
+        <input type="number" name="amount_per_piece" step="0.01" placeholder="Price per unit" required>
+        <input type="number" name="total_quantity" placeholder="Total Quantity" required>
+        <button type="submit">Add Product</button>
+    </form>
+
+<h2>Sell Product</h2>
+<form action="/sell_product" method="POST">
+    <input type="text" name="barcode" placeholder="Scan Barcode (Product Code)" required>
+    <input type="number" name="quantity_sold" placeholder="Quantity Sold" required>
+    <button type="submit">Sell</button>
+</form>
+
+    <h2>Sales Summary</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Total Sales</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sale in sales %}
+            <tr>
+                <td>{{ sale['name'] }}</td>
+                <td>{{ sale['total_sales'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
