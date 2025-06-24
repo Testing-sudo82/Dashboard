@@ -3,65 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cashier Dashboard</title>
+    <title>Sell Product - Grocery Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Cashier Dashboard</h1>
-    
-<h2>Products</h2>
-<table>
-    <thead>
-        <tr>
-            <th>Product Name</th>
-            <th>Product Code</th>
-            <th>Amount/Unit</th>
-            <th>Total Quantity</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for product in products %}
-        <tr>
-            <td>{{ product['name'] }}</td>
-            <td>{{ product['product_code'] }}</td>
-            <td>{{ product['amount_per_piece'] }}</td>
-            <td>{{ product['total_quantity'] }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <header class="header-bar">
+        <h1>Grocery Dashboard</h1>
+        <nav style="margin-top:1em;">
+            <a href="/add_product_page" style="margin-right:1em;">Add Product</a>
+            <a href="/summary">Sales Summary</a>
+        </nav>
+    </header>
+    <main class="dashboard-container">
+        <section class="card">
+            <h2>Sell Product</h2>
+            <form action="/sell_product" method="POST" class="form-styled" id="sell-form">
+                <input type="text" name="product_name" list="product-list" placeholder="Type product name" required autocomplete="off" id="sell-product-input">
+                <datalist id="product-list">
+                    {% for product in products %}
+                    <option value="{{ product['name'] }}">{{ product['name'] }} ({{ product['category'] }}, {{ product['unit'] }})</option>
+                    {% endfor %}
+                </datalist>
+                <div id="product-info" style="font-size:1em; color:#1565c0; background:#e3f2fd; border-radius:6px; padding:6px 10px; margin-bottom:4px; min-height:1.5em;"></div>
+                <input type="number" name="quantity_sold" placeholder="Quantity Sold" required id="quantity-sold-input" min="1">
+                <button type="submit">Sell</button>
+            </form>
+            <script>
+                const productsDataSell = {{ products|tojson | safe }};
+                const productInput = document.getElementById('sell-product-input');
+                const productInfo = document.getElementById('product-info');
+                const quantityInput = document.getElementById('quantity-sold-input');
+                const sellForm = document.getElementById('sell-form');
 
-    <h2>Add Product</h2>
-    <form action="/add_product" method="POST">
-        <input type="text" name="name" placeholder="Product Name" required>
-        <input type="number" name="amount_per_piece" step="0.01" placeholder="Price per unit" required>
-        <input type="number" name="total_quantity" placeholder="Total Quantity" required>
-        <button type="submit">Add Product</button>
-    </form>
-
-<h2>Sell Product</h2>
-<form action="/sell_product" method="POST">
-    <input type="text" name="barcode" placeholder="Scan Barcode (Product Code)" required>
-    <input type="number" name="quantity_sold" placeholder="Quantity Sold" required>
-    <button type="submit">Sell</button>
-</form>
-
-    <h2>Sales Summary</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Product</th>
-                <th>Total Sales</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for sale in sales %}
-            <tr>
-                <td>{{ sale['name'] }}</td>
-                <td>{{ sale['total_sales'] }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                function updateProductInfo() {
+                    const name = productInput.value;
+                    const product = productsDataSell.find(p => p.name === name);
+                    if (product) {
+                        productInfo.innerHTML = `<b>Available:</b> ${product.total_quantity} <b>${product.unit || ''}</b>`;
+                        quantityInput.max = product.total_quantity;
+                        if (parseInt(quantityInput.value) > product.total_quantity) {
+                            quantityInput.value = product.total_quantity;
+                        }
+                    } else {
+                        productInfo.innerHTML = '';
+                        quantityInput.removeAttribute('max');
+                    }
+                }
+                productInput.addEventListener('input', updateProductInfo);
+                quantityInput.addEventListener('input', updateProductInfo);
+                // On form submit, check again
+                sellForm.addEventListener('submit', function(e) {
+                    const name = productInput.value;
+                    const product = productsDataSell.find(p => p.name === name);
+                    if (product && parseInt(quantityInput.value) > product.total_quantity) {
+                        alert('Quantity not enough!');
+                        e.preventDefault();
+                    }
+                });
+                // Initial info update
+                updateProductInfo();
+            </script>
+        </section>
+        <section class="card">
+            <h2>Product Details</h2>
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Category</th>
+                        <th>Unit</th>
+                        <th>Amount/Unit</th>
+                        <th>Product Remaining at End of Day</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                    <tr>
+                        <td>{{ product['name'] }}</td>
+                        <td>{{ product['category'] }}</td>
+                        <td>{{ product['unit'] }}</td>
+                        <td>{{ product['amount_per_piece'] }}</td>
+                        <td>{{ product['total_quantity'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </main>
 </body>
 </html>

@@ -8,13 +8,16 @@ def init_db():
             # Drop the old products table if it exists (Warning: This will delete all data)
             cursor.execute('DROP TABLE IF EXISTS products')
 
-            # Create a new products table with the 'product_code' column
+            # Create a new products table with 'original_quantity' and 'total_quantity' columns
             cursor.execute('''CREATE TABLE IF NOT EXISTS products (
                                 id INTEGER PRIMARY KEY,
                                 name TEXT NOT NULL,
-                                product_code TEXT NOT NULL UNIQUE,
                                 amount_per_piece REAL NOT NULL,
-                                total_quantity INTEGER NOT NULL
+                                total_quantity INTEGER NOT NULL,
+                                original_quantity INTEGER NOT NULL,
+                                category TEXT,
+                                unit TEXT,
+                                date_of_buy TEXT
                             )''')
 
             cursor.execute('''CREATE TABLE IF NOT EXISTS sales (

@@ -1,34 +1,171 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f4f6fb;
+    margin: 0;
+    min-height: 100vh;
 }
 
-h1 {
+.header-bar {
+    background: #2d3e50;
+    color: #fff;
+    padding: 1.5rem 0;
     text-align: center;
+    box-shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
 }
 
-table {
+.header-bar nav {
+    margin-top: 1em;
+}
+
+.header-bar nav a {
+    display: inline-block;
+    background: #34495e;
+    color: #fff;
+    text-decoration: none;
+    padding: 0.8rem 1.5rem;
+    margin: 0 0.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.header-bar nav a:hover {
+    background: #fff;
+    color: #2d3e50;
+    border-color: #2d3e50;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.header-bar nav a:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(44, 62, 80, 0.10);
+    padding: 2rem 1.5rem;
+    min-width: 400px;
+    max-width: 1200px;
+    flex: 1 1 800px;
+    margin-bottom: 2rem;
+}
+
+.card h2 {
+    margin-top: 0;
+    color: #2d3e50;
+    font-size: 1.3rem;
+    margin-bottom: 1.2rem;
+}
+
+.styled-table {
     width: 100%;
-    margin: 20px 0;
     border-collapse: collapse;
+    margin-bottom: 1.5rem;
+    background: #fafbfc;
+    border-radius: 8px;
+    overflow: hidden;
+    font-size: 0.9rem;
 }
 
-th, td {
-    padding: 10px;
-    border: 1px solid #ddd;
-    text-align: center;
+.styled-table th, .styled-table td {
+    padding: 8px 6px;
+    border-bottom: 1px solid #e0e4ea;
+    text-align: left;
+    white-space: nowrap;
 }
 
-form {
-    margin: 20px 0;
+.styled-table th {
+    background: #e9eef6;
+    color: #2d3e50;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.styled-table tr:last-child td {
+    border-bottom: none;
+}
+
+.styled-table td {
+    font-size: 0.85rem;
+}
+
+.form-styled {
     display: flex;
     flex-direction: column;
-    max-width: 300px;
-    margin: auto;
+    gap: 1rem;
 }
 
-form input, form button {
-    margin: 10px 0;
-    padding: 10px;
+.form-styled input, .form-styled button {
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
     font-size: 1rem;
+}
+
+.form-styled input:focus {
+    outline: none;
+    border-color: #2d3e50;
+    box-shadow: 0 0 0 2px #e9eef6;
+}
+
+.form-styled button {
+    background: #2d3e50;
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.form-styled button:hover {
+    background: #1a2533;
+}
+
+@media (max-width: 1200px) {
+    .dashboard-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+        padding: 1rem;
+    }
+    .card {
+        max-width: 95vw;
+        min-width: unset;
+    }
+    .styled-table {
+        font-size: 0.8rem;
+    }
+    .styled-table th, .styled-table td {
+        padding: 6px 4px;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-bar nav a {
+        padding: 0.6rem 1rem;
+        margin: 0.3rem;
+        font-size: 0.9rem;
+    }
+    .styled-table {
+        font-size: 0.75rem;
+    }
+    .styled-table th, .styled-table td {
+        padding: 4px 2px;
+        font-size: 0.75rem;
+    }
 }

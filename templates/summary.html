@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Summary - Grocery Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="header-bar">
+        <h1>Grocery Dashboard</h1>
+        <nav style="margin-top:1em;">
+            <a href="/add_product_page" style="margin-right:1em;">Add Product</a>
+            <a href="/">Sell Product</a>
+        </nav>
+    </header>
+    <main class="dashboard-container">
+        <section class="card">
+            <h2>Sales Summary</h2>
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Product</th>
+                        <th>Product Remaining at End of Day</th>
+                        <th>Product Sold</th>
+                        <th>Total Amount</th>
+                        <th>Gain</th>
+                        <th>Loss</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in sales_summary %}
+                    <tr>
+                        <td>{{ row.date }}</td>
+                        <td>{{ row.product_name }}</td>
+                        <td>{{ row.remaining }}</td>
+                        <td>{{ row.sold }}</td>
+                        <td>{{ row.total_amount }}</td>
+                        <td>{{ row.gain }}</td>
+                        <td>{{ row.loss }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </main>
+</body>
+</html> 
